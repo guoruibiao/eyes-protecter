@@ -13,7 +13,46 @@
 
 <p><img src="previews/icon.png" width="96" alt="Eyes Protecter App 图标"></p>
 
-![自定义图片背景](previews/overlay-with-image.png)
+## 下载与安装
+
+发布版会放在 **GitHub Releases**：
+
+<https://github.com/guoruibiao/eyes-protecter/releases>
+
+下载 `Eyes-Protecter-2.2.1.zip` 或 `.dmg` 后：
+
+1. 解压 zip（或双击 dmg 并把 App 拖入「应用程序」）。
+2. 将 `Eyes Protecter.app` 放入 `/Applications`。
+3. 第一次打开如果出现「Apple 无法验证 Eyes Protecter」的提示，不用慌，按下方步骤处理。
+
+### 遇到“Apple 无法验证 Eyes Protecter”
+
+<p><img src="previews/gatekeeper-warning.png" width="360" alt="macOS Gatekeeper 提示"></p>
+
+这是 macOS 对**没有经过 Apple 公证**的 App 的默认安全提示，不是检测到病毒。**不要点「移到废纸篓」**，按下面任一方式打开即可。
+
+**方式一：右键打开（推荐）**
+
+1. 点「完成」关闭提示；
+2. 在 Finder 中找到 `Eyes Protecter.app`，右键 → **打开**；
+3. 如果再次弹窗，点 **打开**。
+
+**方式二：系统设置放行**
+
+1. 点「完成」关闭提示；
+2. 打开 **系统设置 → 隐私与安全性**；
+3. 在「安全性」区域找到关于 Eyes Protecter 的提示，点 **仍要打开**，输入 Mac 密码。
+
+**方式三：终端移除 quarantine**
+
+```bash
+xattr -dr com.apple.quarantine "/Applications/Eyes Protecter.app"
+open "/Applications/Eyes Protecter.app"
+```
+
+> 出现原因：当前发布包使用本地 ad-hoc 签名，未经过 Apple Developer ID 签名和公证；这不代表 App 有恶意代码。源码公开，可自行检查或构建。放行一次后 macOS 会记住；要彻底消除这个提示，需要开发者签名并公证，见下方「发布新版本」。
+
+如需开机自启：**系统设置 → 通用 → 登录项 → 打开时添加“Eyes Protecter”**。
 
 ## 功能
 
@@ -35,26 +74,7 @@
 
 ![Eyes Protecter 菜单面板](previews/panel.png)
 
-## 下载与安装
-
-发布版会放在 **GitHub Releases**：
-
-<https://github.com/guoruibiao/eyes-protecter/releases>
-
-下载 `Eyes-Protecter-2.2.1.zip` 或 `.dmg` 后：
-
-1. 解压 zip（或双击 dmg 并把 App 拖入「应用程序」）。
-2. 将 `Eyes Protecter.app` 放入 `/Applications`。
-3. 第一次打开如果被 Gatekeeper 拦住，右键 App → **打开**，或在终端执行：
-
-```bash
-xattr -dr com.apple.quarantine "/Applications/Eyes Protecter.app"
-open "/Applications/Eyes Protecter.app"
-```
-
-> 当前发布包使用本地 ad-hoc 签名，未经过 Apple 公证，所以从网络下载后可能触发 Gatekeeper 提示。若要完全消除这个提示，需要使用 Apple Developer ID 签名并公证，见下方「发布新版本」。
-
-如需开机自启：**系统设置 → 通用 → 登录项 → 打开时添加“Eyes Protecter”**。
+![休眠遮罩效果](previews/overlay-with-image.png)
 
 ## 系统要求
 
@@ -226,6 +246,7 @@ scripts/
   render-preview.swift       ImageRenderer 预览图生成（开发用）
 previews/
   panel.png                  菜单面板截图
+  gatekeeper-warning.png     macOS Gatekeeper 提示截图
   overlay.png                纯黑背景效果
   overlay-with-image.png     自定义图片效果
   sample-background.jpg      预览用示例图
