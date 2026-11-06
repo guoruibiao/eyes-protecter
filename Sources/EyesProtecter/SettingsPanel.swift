@@ -561,7 +561,7 @@ struct SettingsPanel: View {
 
     private var appVersion: String {
         let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
-        return "v\(version ?? "2.2.0")"
+        return "v\(version ?? "2.2.1")"
     }
 
     private func requirementRow(_ title: String, _ value: String) -> some View {

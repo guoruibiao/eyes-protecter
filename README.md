@@ -6,7 +6,7 @@
 
 默认是纯黑背景，也可以在菜单栏里选择一张自己的图片，休息时铺满整个屏幕。
 
-使用 **Swift + SwiftUI** 编写，只依赖 **Command Line Tools**（不需要完整 Xcode），没有第三方库，也没有私有 API。当前版本 **2.2.0**，Universal 2 构建，Apple Silicon 与 Intel Mac 都可以运行。
+使用 **Swift + SwiftUI** 编写，只依赖 **Command Line Tools**（不需要完整 Xcode），没有第三方库，也没有私有 API。当前版本 **2.2.1**，Universal 2 构建，Apple Silicon 与 Intel Mac 都可以运行。
 
 - 项目主页：<https://github.com/guoruibiao/eyes-protecter>
 - 作者：泰戈尔 · <https://github.com/guoruibiao>
@@ -41,7 +41,7 @@
 
 <https://github.com/guoruibiao/eyes-protecter/releases>
 
-下载 `Eyes-Protecter-2.2.0.zip` 或 `.dmg` 后：
+下载 `Eyes-Protecter-2.2.1.zip` 或 `.dmg` 后：
 
 1. 解压 zip（或双击 dmg 并把 App 拖入「应用程序」）。
 2. 将 `Eyes Protecter.app` 放入 `/Applications`。
@@ -158,18 +158,18 @@ GitHub Releases 是最适合放「已经编译好的 App」的位置：源码留
 **网页方式：**
 
 1. 打开 <https://github.com/guoruibiao/eyes-protecter/releases/new>
-2. Tag 填 `v2.2.0`，标题填 `Eyes Protecter 2.2.0`
-3. 把 `dist/Eyes-Protecter-2.2.0.zip` 和 `.dmg` 拖入 Assets
+2. Tag 填 `v2.2.1`，标题填 `Eyes Protecter 2.2.1`
+3. 把 `dist/Eyes-Protecter-2.2.1.zip` 和 `.dmg` 拖入 Assets
 4. 发布
 
 **命令行方式（需要 GitHub CLI 并已登录）：**
 
 ```bash
-gh release create v2.2.0 \
-  "dist/Eyes-Protecter-2.2.0.zip" \
-  "dist/Eyes-Protecter-2.2.0.dmg" \
-  --title "Eyes Protecter 2.2.0" \
-  --notes "Eyes Protecter 2.2.0"
+gh release create v2.2.1 \
+  "dist/Eyes-Protecter-2.2.1.zip" \
+  "dist/Eyes-Protecter-2.2.1.dmg" \
+  --title "Eyes Protecter 2.2.1" \
+  --notes "Eyes Protecter 2.2.1"
 ```
 
 发布后的下载地址形如：
@@ -189,9 +189,9 @@ codesign --deep --force --options runtime \
 
 ditto -c -k --sequesterRsrc --keepParent \
   "dist/Eyes Protecter.app" \
-  "dist/Eyes-Protecter-2.2.0.zip"
+  "dist/Eyes-Protecter-2.2.1.zip"
 
-xcrun notarytool submit "dist/Eyes-Protecter-2.2.0.zip" \
+xcrun notarytool submit "dist/Eyes-Protecter-2.2.1.zip" \
   --apple-id "you@example.com" \
   --team-id "TEAMID" \
   --password "app-specific-password" \

@@ -40,7 +40,7 @@ struct OverlayCardView: View {
 
             HStack(spacing: 8) {
                 Image(systemName: "cursorarrow.click")
-                Text("点击这块文案，恢复屏幕")
+                Text("点击此区域，恢复屏幕")
             }
             .font(.system(size: 13, weight: .medium))
             .foregroundStyle(.white.opacity(breathe ? 0.8 : 0.45))
