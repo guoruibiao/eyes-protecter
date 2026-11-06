@@ -31,6 +31,10 @@
 - 从旧版 Move Ur Eyes 升级时，会自动迁移原有的设置和休眠背景图
 - **打赏作者**：面板底部展示微信收款码缩略图，点击打开大图；支持用系统预览打开原图
 
+## 界面预览
+
+![Eyes Protecter 菜单面板](previews/panel.png)
+
 ## 下载与安装
 
 发布版会放在 **GitHub Releases**：
@@ -207,6 +211,7 @@ Sources/EyesProtecter/
   BreakOverlay.swift         每屏遮罩窗口、渐隐渐现、点击命中
   OverlayBackgroundView.swift AppKit 全屏黑底 / 图片背景层
   OverlayCardView.swift      遮罩上的文案卡片
+  DonationView.swift         打赏窗口与二维码加载
   SettingsPanel.swift        菜单栏设置面板
 Resources/
   Info.plist
@@ -220,6 +225,7 @@ scripts/
   generate-icon.py           用 IconSource.png 重新生成 AppIcon.icns
   render-preview.swift       ImageRenderer 预览图生成（开发用）
 previews/
+  panel.png                  菜单面板截图
   overlay.png                纯黑背景效果
   overlay-with-image.png     自定义图片效果
   sample-background.jpg      预览用示例图
