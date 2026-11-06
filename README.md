@@ -6,7 +6,7 @@
 
 默认是纯黑背景，也可以在菜单栏里选择一张自己的图片，休息时铺满整个屏幕。
 
-使用 **Swift + SwiftUI** 编写，只依赖 **Command Line Tools**（不需要完整 Xcode），没有第三方库，也没有私有 API。当前版本 **2.0.0**，Universal 2 构建，Apple Silicon 与 Intel Mac 都可以运行。
+使用 **Swift + SwiftUI** 编写，只依赖 **Command Line Tools**（不需要完整 Xcode），没有第三方库，也没有私有 API。当前版本 **2.1.0**，Universal 2 构建，Apple Silicon 与 Intel Mac 都可以运行。
 
 - 项目主页：<https://github.com/guoruibiao/eyes-protecter>
 - 作者：泰戈尔 · <https://github.com/guoruibiao>
@@ -17,13 +17,14 @@
 
 ## 功能
 
-- 菜单栏实时显示下一次休息倒计时，休息时自动切换状态图标
-- 菜单面板左上角使用同款小苗 App 图标
+- 菜单栏空闲时使用小苗 template 图标，暂停/休息时切换状态图标，并显示倒计时
+- 菜单面板左上角使用同款小苗 App 图标，界面强调色与图标绿色保持一致
 - 休息间隔 1–180 分钟可调，内置 15 / 20 / 30 / 45 / 60 分钟快捷选项
 - **变暗时长**（进入休眠的过渡时间）1–20 秒可调，**默认 10 秒**
 - **休眠画面**可自定义：默认纯黑，也可以选择一张图片铺满所有屏幕
 - 文案自定义，支持多行
-- 总开关（暂停 / 启用）、立即休息、重新计时
+- 总开关（暂停 / 继续）、立即休息、重新计时
+- 面板高度自动适配屏幕，小屏可滚动；品牌绿强调色与图标一致
 - 多显示器同步遮罩，完整覆盖菜单栏、Dock 和全屏 Space
 - 设置自动保存；图片会复制到 Application Support，原图移动或删除也不影响
 - 遮罩完全变黑后自动收起鼠标指针，移动鼠标即重新出现
@@ -35,7 +36,7 @@
 
 <https://github.com/guoruibiao/eyes-protecter/releases>
 
-下载 `Eyes-Protecter-2.0.0.zip` 或 `.dmg` 后：
+下载 `Eyes-Protecter-2.1.0.zip` 或 `.dmg` 后：
 
 1. 解压 zip（或双击 dmg 并把 App 拖入「应用程序」）。
 2. 将 `Eyes Protecter.app` 放入 `/Applications`。
@@ -90,7 +91,7 @@ make open
 
 1. 启动后菜单栏会出现眼睛图标和倒计时。
 2. 点击图标打开设置面板：
-   - 右上角开关：暂停 / 启用整个计时
+   - 右上角开关：暂停 / 继续计时
    - **现在休息**：立即预览一次完整的变暗流程
    - **重新计时**：把倒计时重置为一个完整间隔
    - **休息间隔**：用步进器或快捷按钮设置
@@ -151,18 +152,18 @@ GitHub Releases 是最适合放「已经编译好的 App」的位置：源码留
 **网页方式：**
 
 1. 打开 <https://github.com/guoruibiao/eyes-protecter/releases/new>
-2. Tag 填 `v2.0.0`，标题填 `Eyes Protecter 2.0.0`
-3. 把 `dist/Eyes-Protecter-2.0.0.zip` 和 `.dmg` 拖入 Assets
+2. Tag 填 `v2.1.0`，标题填 `Eyes Protecter 2.1.0`
+3. 把 `dist/Eyes-Protecter-2.1.0.zip` 和 `.dmg` 拖入 Assets
 4. 发布
 
 **命令行方式（需要 GitHub CLI 并已登录）：**
 
 ```bash
-gh release create v2.0.0 \
-  "dist/Eyes-Protecter-2.0.0.zip" \
-  "dist/Eyes-Protecter-2.0.0.dmg" \
-  --title "Eyes Protecter 2.0.0" \
-  --notes "Eyes Protecter 2.0.0"
+gh release create v2.1.0 \
+  "dist/Eyes-Protecter-2.1.0.zip" \
+  "dist/Eyes-Protecter-2.1.0.dmg" \
+  --title "Eyes Protecter 2.1.0" \
+  --notes "Eyes Protecter 2.1.0"
 ```
 
 发布后的下载地址形如：
@@ -182,9 +183,9 @@ codesign --deep --force --options runtime \
 
 ditto -c -k --sequesterRsrc --keepParent \
   "dist/Eyes Protecter.app" \
-  "dist/Eyes-Protecter-2.0.0.zip"
+  "dist/Eyes-Protecter-2.1.0.zip"
 
-xcrun notarytool submit "dist/Eyes-Protecter-2.0.0.zip" \
+xcrun notarytool submit "dist/Eyes-Protecter-2.1.0.zip" \
   --apple-id "you@example.com" \
   --team-id "TEAMID" \
   --password "app-specific-password" \
@@ -208,6 +209,7 @@ Sources/EyesProtecter/
 Resources/
   Info.plist
   AppIcon.icns               由小苗图生成
+  MenuBarIcon.png            菜单栏小苗 template 图标
   IconSource.png             小苗原始透明图（152x150）
 scripts/
   build-app.sh               arm64 + x86_64 编译、Universal 2 打包、ad-hoc 签名

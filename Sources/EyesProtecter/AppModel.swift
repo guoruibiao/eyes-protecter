@@ -84,7 +84,7 @@ final class AppModel: ObservableObject {
             defaults.set(isEnabled, forKey: Key.isEnabled)
             if isEnabled {
                 if phase == .paused {
-                    startCountdown()
+                    resumeCountdown()
                 }
             } else {
                 pauseCountdown()
@@ -159,7 +159,7 @@ final class AppModel: ObservableObject {
 
     var menuBarSymbol: String {
         switch phase {
-        case .idle: return "eye"
+        case .idle: return "leaf.fill"
         case .paused: return "pause.circle"
         case .breaking: return "eye.slash"
         case .restoring: return "sun.max"
@@ -328,8 +328,20 @@ final class AppModel: ObservableObject {
 
         stopTimer()
         phase = .idle
+        scheduleTimer(after: intervalSeconds)
+    }
 
-        let seconds = intervalSeconds
+    /// Resume from the remaining time instead of restarting the full interval.
+    private func resumeCountdown() {
+        guard phase == .paused, isEnabled else { return }
+
+        let seconds = remaining > 1 ? remaining : intervalSeconds
+        stopTimer()
+        phase = .idle
+        scheduleTimer(after: seconds)
+    }
+
+    private func scheduleTimer(after seconds: TimeInterval) {
         remaining = seconds
         nextBreakDate = Date().addingTimeInterval(seconds)
 

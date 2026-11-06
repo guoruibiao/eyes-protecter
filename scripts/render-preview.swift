@@ -38,16 +38,6 @@ struct PreviewRenderer {
             render(imageOverlay, scale: 1, to: outputDir.appendingPathComponent("overlay-with-image.png"))
         }
 
-        let suite = "preview.eyesprotecter.\(UUID().uuidString)"
-        let defaults = UserDefaults(suiteName: suite)!
-        let model = AppModel(defaults: defaults)
-        let panel = ZStack {
-            Color(nsColor: .windowBackgroundColor)
-            SettingsPanel().environmentObject(model)
-        }
-        .frame(width: 352)
-        render(panel, scale: 2, to: outputDir.appendingPathComponent("panel.png"))
-        defaults.removePersistentDomain(forName: suite)
     }
 
     @MainActor

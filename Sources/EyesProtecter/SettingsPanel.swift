@@ -5,6 +5,10 @@ import UniformTypeIdentifiers
 struct SettingsPanel: View {
     @EnvironmentObject private var model: AppModel
     @State private var showAbout = false
+    @State private var contentHeight: CGFloat = 540
+    @State private var maxContentHeight: CGFloat = 620
+
+    private let brandColor = Color(red: 0.12, green: 0.56, blue: 0.35)
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -14,15 +18,22 @@ struct SettingsPanel: View {
                 .opacity(0.5)
                 .padding(.horizontal, 16)
 
-            VStack(alignment: .leading, spacing: 16) {
-                statusCard
-                intervalSection
-                fadeInSection
-                backgroundSection
-                messageSection
-                aboutSection
+            ScrollView(.vertical, showsIndicators: contentHeight > maxContentHeight) {
+                settingsContent
+                    .padding(16)
+                    .background(
+                        GeometryReader { proxy in
+                            Color.clear.preference(
+                                key: PanelContentHeightKey.self,
+                                value: proxy.size.height
+                            )
+                        }
+                    )
             }
-            .padding(16)
+            .frame(height: min(contentHeight, maxContentHeight))
+            .onPreferenceChange(PanelContentHeightKey.self) { newHeight in
+                contentHeight = newHeight
+            }
 
             Divider()
                 .opacity(0.5)
@@ -31,6 +42,25 @@ struct SettingsPanel: View {
             footer
         }
         .frame(width: 352)
+        .tint(brandColor)
+        .onAppear(perform: updateMaxContentHeight)
+    }
+
+    private var settingsContent: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            statusCard
+            intervalSection
+            fadeInSection
+            backgroundSection
+            messageSection
+            aboutSection
+        }
+    }
+
+    private func updateMaxContentHeight() {
+        let screen = NSScreen.main ?? NSScreen.screens.first
+        let visibleHeight = screen?.visibleFrame.height ?? 900
+        maxContentHeight = max(320, min(720, visibleHeight - 150))
     }
 
     // MARK: - Header
@@ -54,7 +84,8 @@ struct SettingsPanel: View {
                 .labelsHidden()
                 .toggleStyle(.switch)
                 .controlSize(.small)
-                .help(model.isEnabled ? "暂停计时" : "开始计时")
+                .tint(brandColor)
+                .help(model.isEnabled ? "暂停计时" : "继续计时")
         }
         .padding(.horizontal, 16)
         .padding(.top, 16)
@@ -71,10 +102,10 @@ struct SettingsPanel: View {
             } else {
                 ZStack {
                     RoundedRectangle(cornerRadius: 10, style: .continuous)
-                        .fill(Color.accentColor.opacity(0.15))
+                        .fill(brandColor.opacity(0.15))
                     Image(systemName: "leaf.fill")
                         .font(.system(size: 16, weight: .semibold))
-                        .foregroundStyle(Color.accentColor)
+                        .foregroundStyle(brandColor)
                 }
             }
         }
@@ -121,6 +152,7 @@ struct SettingsPanel: View {
                     .font(.system(size: 12, weight: .semibold))
             }
             .buttonStyle(.borderedProminent)
+            .tint(brandColor)
             .controlSize(.regular)
             .disabled(model.isBusy)
             .help("立即体验一次变暗效果")
@@ -129,11 +161,11 @@ struct SettingsPanel: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
             RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .fill(Color.accentColor.opacity(0.09))
+                .fill(brandColor.opacity(0.09))
         )
         .overlay(
             RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .strokeBorder(Color.accentColor.opacity(0.14))
+                .strokeBorder(brandColor.opacity(0.14))
         )
     }
 
@@ -174,13 +206,13 @@ struct SettingsPanel: View {
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 5)
                             .foregroundStyle(
-                                model.intervalMinutes == minutes ? Color.accentColor : Color.secondary
+                                model.intervalMinutes == minutes ? brandColor : Color.secondary
                             )
                             .background(
                                 RoundedRectangle(cornerRadius: 7, style: .continuous)
                                     .fill(
                                         model.intervalMinutes == minutes
-                                            ? Color.accentColor.opacity(0.16)
+                                            ? brandColor.opacity(0.16)
                                             : Color.primary.opacity(0.045)
                                     )
                             )
@@ -188,7 +220,7 @@ struct SettingsPanel: View {
                                 RoundedRectangle(cornerRadius: 7, style: .continuous)
                                     .strokeBorder(
                                         model.intervalMinutes == minutes
-                                            ? Color.accentColor.opacity(0.25)
+                                            ? brandColor.opacity(0.25)
                                             : Color.clear
                                     )
                             )
@@ -401,7 +433,7 @@ struct SettingsPanel: View {
 
                 HStack(spacing: 4) {
                     Image(systemName: isCompatible ? "checkmark.circle.fill" : "xmark.octagon.fill")
-                        .foregroundStyle(isCompatible ? Color.green : Color.red)
+                        .foregroundStyle(isCompatible ? brandColor : Color.red)
                     Text(isCompatible ? "可运行" : "不兼容")
                         .foregroundStyle(.secondary)
                 }
@@ -466,7 +498,7 @@ struct SettingsPanel: View {
 
     private var appVersion: String {
         let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
-        return "v\(version ?? "2.0.0")"
+        return "v\(version ?? "2.1.0")"
     }
 
     private func requirementRow(_ title: String, _ value: String) -> some View {
@@ -510,7 +542,16 @@ struct MenuBarLabel: View {
 
     var body: some View {
         HStack(spacing: 4) {
-            Image(systemName: model.menuBarSymbol)
+            if model.phase == .idle, let icon = Self.menuBarIcon {
+                Image(nsImage: icon)
+                    .renderingMode(.template)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 16, height: 16)
+            } else {
+                Image(systemName: model.menuBarSymbol)
+            }
+
             if model.showCountdown {
                 Text(model.menuBarText)
                     .monospacedDigit()
@@ -518,5 +559,23 @@ struct MenuBarLabel: View {
         }
         .accessibilityLabel("Eyes Protecter")
         .accessibilityValue(model.menuBarText)
+    }
+
+    private static let menuBarIcon: NSImage? = {
+        guard let url = Bundle.main.url(forResource: "MenuBarIcon", withExtension: "png"),
+              let image = NSImage(contentsOf: url) else {
+            return nil
+        }
+        image.isTemplate = true
+        image.size = NSSize(width: 16, height: 16)
+        return image
+    }()
+}
+
+private struct PanelContentHeightKey: PreferenceKey {
+    static var defaultValue: CGFloat = 0
+
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = max(value, nextValue())
     }
 }
