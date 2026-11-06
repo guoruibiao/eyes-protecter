@@ -62,6 +62,7 @@ echo "    architectures: $ARCHS"
 cp "$ROOT/Resources/Info.plist" "$APP/Contents/Info.plist"
 cp "$ROOT/Resources/AppIcon.icns" "$APP/Contents/Resources/AppIcon.icns"
 cp "$ROOT/Resources/MenuBarIcon.png" "$APP/Contents/Resources/MenuBarIcon.png"
+cp "$ROOT/Resources/DonationQRCode.jpg" "$APP/Contents/Resources/DonationQRCode.jpg"
 printf 'APPL????' > "$APP/Contents/PkgInfo"
 
 # Ad-hoc signature is enough for a locally built, non-sandboxed menu bar app.

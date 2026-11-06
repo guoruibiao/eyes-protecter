@@ -54,6 +54,7 @@ struct SettingsPanel: View {
             backgroundSection
             messageSection
             aboutSection
+            donationSection
         }
     }
 
@@ -442,6 +443,68 @@ struct SettingsPanel: View {
         }
     }
 
+    private var donationSection: some View {
+        VStack(alignment: .leading, spacing: 7) {
+            sectionTitle("打赏作者")
+
+            Button {
+                DonationWindowController.shared.show()
+            } label: {
+                HStack(spacing: 10) {
+                    donationThumbnail
+
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("喜欢这个工具？")
+                            .font(.system(size: 12, weight: .medium))
+                        Text("微信扫码，请作者喝杯咖啡")
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                    }
+
+                    Spacer(minLength: 4)
+
+                    HStack(spacing: 3) {
+                        Image(systemName: "magnifyingglass")
+                        Text("放大")
+                    }
+                    .font(.caption2)
+                    .foregroundStyle(brandColor)
+                }
+                .padding(10)
+                .background(
+                    RoundedRectangle(cornerRadius: 10, style: .continuous)
+                        .fill(Color.primary.opacity(0.045))
+                )
+                .contentShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel("打赏作者，微信扫码请作者喝咖啡")
+            .help("点击放大收款码")
+        }
+    }
+
+    private var donationThumbnail: some View {
+        ZStack {
+            Color.black
+
+            if let image = DonationQRCode.image {
+                Image(nsImage: image)
+                    .resizable()
+                    .scaledToFill()
+            } else {
+                Image(systemName: "qrcode")
+                    .font(.system(size: 22))
+                    .foregroundStyle(.white.opacity(0.5))
+            }
+        }
+        .frame(width: 46, height: 62)
+        .clipShape(RoundedRectangle(cornerRadius: 7, style: .continuous))
+        .overlay(
+            RoundedRectangle(cornerRadius: 7, style: .continuous)
+                .strokeBorder(Color.primary.opacity(0.12))
+        )
+    }
+
     private var footer: some View {
         HStack(spacing: 12) {
             Button {
@@ -498,7 +561,7 @@ struct SettingsPanel: View {
 
     private var appVersion: String {
         let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
-        return "v\(version ?? "2.1.0")"
+        return "v\(version ?? "2.2.0")"
     }
 
     private func requirementRow(_ title: String, _ value: String) -> some View {

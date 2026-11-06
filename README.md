@@ -6,7 +6,7 @@
 
 默认是纯黑背景，也可以在菜单栏里选择一张自己的图片，休息时铺满整个屏幕。
 
-使用 **Swift + SwiftUI** 编写，只依赖 **Command Line Tools**（不需要完整 Xcode），没有第三方库，也没有私有 API。当前版本 **2.1.0**，Universal 2 构建，Apple Silicon 与 Intel Mac 都可以运行。
+使用 **Swift + SwiftUI** 编写，只依赖 **Command Line Tools**（不需要完整 Xcode），没有第三方库，也没有私有 API。当前版本 **2.2.0**，Universal 2 构建，Apple Silicon 与 Intel Mac 都可以运行。
 
 - 项目主页：<https://github.com/guoruibiao/eyes-protecter>
 - 作者：泰戈尔 · <https://github.com/guoruibiao>
@@ -29,6 +29,7 @@
 - 设置自动保存；图片会复制到 Application Support，原图移动或删除也不影响
 - 遮罩完全变黑后自动收起鼠标指针，移动鼠标即重新出现
 - 从旧版 Move Ur Eyes 升级时，会自动迁移原有的设置和休眠背景图
+- **打赏作者**：面板底部展示微信收款码缩略图，点击打开大图；支持用系统预览打开原图
 
 ## 下载与安装
 
@@ -36,7 +37,7 @@
 
 <https://github.com/guoruibiao/eyes-protecter/releases>
 
-下载 `Eyes-Protecter-2.1.0.zip` 或 `.dmg` 后：
+下载 `Eyes-Protecter-2.2.0.zip` 或 `.dmg` 后：
 
 1. 解压 zip（或双击 dmg 并把 App 拖入「应用程序」）。
 2. 将 `Eyes Protecter.app` 放入 `/Applications`。
@@ -99,6 +100,7 @@ make open
    - **休眠画面**：保持纯黑，或点击“选择图片…”挑一张图片；已设置后可“更换”或点垃圾桶恢复纯黑
    - **休息文案**：支持多行
    - **关于**：默认折叠，点击展开软件说明、作者泰戈尔、GitHub 主页、版本号，以及最低系统要求、当前 macOS 版本/芯片和兼容状态
+   - **打赏作者**：点击微信收款码缩略图打开大图，方便扫码支持作者
 3. 倒计时结束后：
    - 所有屏幕在设定时间内渐暗到全黑；
    - 如果设置了图片，图片会在黑色完全盖住后淡入并铺满屏幕；
@@ -152,18 +154,18 @@ GitHub Releases 是最适合放「已经编译好的 App」的位置：源码留
 **网页方式：**
 
 1. 打开 <https://github.com/guoruibiao/eyes-protecter/releases/new>
-2. Tag 填 `v2.1.0`，标题填 `Eyes Protecter 2.1.0`
-3. 把 `dist/Eyes-Protecter-2.1.0.zip` 和 `.dmg` 拖入 Assets
+2. Tag 填 `v2.2.0`，标题填 `Eyes Protecter 2.2.0`
+3. 把 `dist/Eyes-Protecter-2.2.0.zip` 和 `.dmg` 拖入 Assets
 4. 发布
 
 **命令行方式（需要 GitHub CLI 并已登录）：**
 
 ```bash
-gh release create v2.1.0 \
-  "dist/Eyes-Protecter-2.1.0.zip" \
-  "dist/Eyes-Protecter-2.1.0.dmg" \
-  --title "Eyes Protecter 2.1.0" \
-  --notes "Eyes Protecter 2.1.0"
+gh release create v2.2.0 \
+  "dist/Eyes-Protecter-2.2.0.zip" \
+  "dist/Eyes-Protecter-2.2.0.dmg" \
+  --title "Eyes Protecter 2.2.0" \
+  --notes "Eyes Protecter 2.2.0"
 ```
 
 发布后的下载地址形如：
@@ -183,9 +185,9 @@ codesign --deep --force --options runtime \
 
 ditto -c -k --sequesterRsrc --keepParent \
   "dist/Eyes Protecter.app" \
-  "dist/Eyes-Protecter-2.1.0.zip"
+  "dist/Eyes-Protecter-2.2.0.zip"
 
-xcrun notarytool submit "dist/Eyes-Protecter-2.1.0.zip" \
+xcrun notarytool submit "dist/Eyes-Protecter-2.2.0.zip" \
   --apple-id "you@example.com" \
   --team-id "TEAMID" \
   --password "app-specific-password" \
@@ -210,6 +212,7 @@ Resources/
   Info.plist
   AppIcon.icns               由小苗图生成
   MenuBarIcon.png            菜单栏小苗 template 图标
+  DonationQRCode.jpg          微信打赏收款码
   IconSource.png             小苗原始透明图（152x150）
 scripts/
   build-app.sh               arm64 + x86_64 编译、Universal 2 打包、ad-hoc 签名
@@ -242,6 +245,12 @@ swift build                    # 只编译
 - 最低支持 macOS 13（`MenuBarExtra` 的要求）；macOS 12 及更早的 Intel Mac 无法运行。
 - 文案过长会自动缩小，建议控制在 6 行以内。
 - 临时退出：先点击卡片恢复，再从菜单面板点“退出”；卡死时可在终端执行 `killall EyesProtecter`。
+
+## 支持作者
+
+如果 **Eyes Protecter** 对你有帮助，欢迎微信扫码请作者喝杯咖啡：
+
+![微信打赏](Resources/DonationQRCode.jpg)
 
 ## 作者
 
